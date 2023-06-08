@@ -1,3 +1,6 @@
 requests
 pandas
 matplotlib
+spacy
+presidio_analyzer
+presidio_anonymizer
