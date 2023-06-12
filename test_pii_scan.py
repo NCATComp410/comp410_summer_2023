@@ -27,6 +27,18 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is not a UUID: 123e4567-e89b-12d3-a456-42665234000')
         self.assertNotIn('UUID', str(results))
 
+    def test_political_group_detection(self):
+        # test a valid political group
+        results = analyze_text('I am a Democrat')
+        self.assertIn('NRP', str(results))
+
+        results = analyze_text('I am a Republican')
+        self.assertIn('NRP', str(results))
+
+        results = analyze_text('This is a democracy')
+        self.assertNotIn('NRP', str(results))
+
+
 
 if __name__ == '__main__':
     unittest.main()
