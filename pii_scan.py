@@ -22,7 +22,7 @@ def generate_uuid():
     return uuid.uuid4()
 
 
-def analyze_text(text: str, show_supported=False) -> list[RecognizerResult]:
+def analyze_text(text: str, show_supported=False, show_details=False) -> list[str] | list[RecognizerResult]:
     # Overview of Presidio
     # https://microsoft.github.io/presidio/analyzer/
 
@@ -32,11 +32,15 @@ def analyze_text(text: str, show_supported=False) -> list[RecognizerResult]:
 
     # Create an additional pattern to detect a 8-4-4-4-12 UUID
     uuid_pattern = Pattern(name='uuid_pattern',
-                           regex=r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}',
+                           regex=r'\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b',
                            score=0.9)
-    uuid_recognizer = PatternRecognizer(supported_entity='UUID', patterns=[uuid_pattern])
+    uuid_recognizer = PatternRecognizer(supported_entity='UUID',
+                                        patterns=[uuid_pattern])
 
-    # Make US-SSN a little more strict
+    # The default SSN detection looks for valid and invalid SSNs. Since we do not want to use
+    # a valid SSN for testing purposes, we will create a custom SSN recognizer that will
+    # detect a SSN in the format xxx-xx-xxxx and not attempt to validate it further
+    # https://github.com/microsoft/presidio/tree/main/presidio-analyzer/presidio_analyzer/predefined_recognizers
     ssn_pattern = Pattern(name='ssn_pattern', regex=r'\b\d{3}-\d{2}-\d{4}\b', score=0.9)
     ssn_recognizer = PatternRecognizer(supported_entity='US_SSN', patterns=[ssn_pattern])
 
@@ -53,16 +57,20 @@ def analyze_text(text: str, show_supported=False) -> list[RecognizerResult]:
 
     # Show all entities that can be detected for debugging
     if show_supported:
-        print(analyzer.get_supported_entities())
-        return []
-
-    # List of entities to detect
-    detect_types = ['US_SSN', 'PHONE_NUMBER', 'EMAIL_ADDRESS', 'PERSON', 'CREDIT_CARD',
-                    'UUID']
+        return analyzer.get_supported_entities()
 
     results = analyzer.analyze(text=text,
-                               entities=detect_types,
                                language='en')
+
+    results = analyzer.analyze(text=text,
+                               language="en",
+                               return_decision_process=show_details)
+    if show_details:
+        print(results)
+        for r in results:
+            decision_process = r.analysis_explanation
+            print(decision_process)
+
     return results
 
 
