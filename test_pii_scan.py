@@ -38,6 +38,62 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is a democracy')
         self.assertNotIn('NRP', str(results))
 
+    def test_phone_number_detection(self):
+        # test a valid phone number
+        results = analyze_text('9992224444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-222-4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.222.4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('(999)222-4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+  
+        results = analyze_text('1-999-222-4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        #results = analyze_text('+1(999)222-444')
+        #self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-22-4444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999224444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.22.4444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999224444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-222-444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('(999)222-444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.222.444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-222-444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999222444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.222.444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('(999)222-444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        esults = analyze_text('thisisanemail@gmail.com')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
 
 
 if __name__ == '__main__':
