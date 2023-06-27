@@ -27,6 +27,22 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is not a UUID: 123e4567-e89b-12d3-a456-42665234000')
         self.assertNotIn('UUID', str(results))
 
+    def test_medical_records_detection(self):
+        # test a valid medical record
+        results = analyze_text('First and Last Name')
+        print(results)
+        self.assertIn('PERSON' , str(results))
+
+        results = analyze_text('Date of BIrth')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Medical Doctor')
+        self.assertIn('PERSON', str(results))
+        
+        results = analyze_text('Reason for visit')
+        self.asserNotIn('PERSON', str(results))
+
+
     def test_political_group_detection(self):
         # test a valid political group
         results = analyze_text('I am a Democrat')
