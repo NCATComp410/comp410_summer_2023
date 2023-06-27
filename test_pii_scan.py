@@ -91,7 +91,7 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('(999)222-444444')
         self.assertNotIn('PHONE_NUMBER', str(results))
 
-        esults = analyze_text('thisisanemail@gmail.com')
+        results = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
 
     def test_social_security_detection(self):
