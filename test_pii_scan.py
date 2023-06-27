@@ -39,7 +39,7 @@ class TestPIIScan(unittest.TestCase):
         self.assertNotIn('NRP', str(results))
 
     def test_social_security_detection(self):
-            # test a valid social secutiy number 
+            # test a valid social security number 
         results = analyze_text('This is a SSN: 121-35-1146')
         self.assertIn('US_SSN', str(results))
 
