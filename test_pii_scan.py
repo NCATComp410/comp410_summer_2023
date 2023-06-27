@@ -1,6 +1,8 @@
+
 import unittest
 from pii_scan import show_aggie_pride, analyze_text
 from presidio_analyzer import RecognizerResult
+from presidio_analyzer import PatternRecognizer
 
 
 class TestPIIScan(unittest.TestCase):
@@ -93,8 +95,20 @@ class TestPIIScan(unittest.TestCase):
 
         esults = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
+   
+    def test_banner_id_detection(self):
+        # test a valid banner id
+        results = analyze_text("950754556")
+        self.assertIn('BANNER_ID', str(results))
 
+        results = analyze_text("987867")
+        self.assertIn('BANNER_ID', str(results))
 
+        results = analyze_text("098bbjk923")
+        self.assertNotIn('BANNER_ID', str(results))
+
+        results = analyze_text("09923")
+        self.assertNotIn('BANNER_ID', str(results))
 
 if __name__ == '__main__':
     unittest.main()

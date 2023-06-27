@@ -36,6 +36,12 @@ def analyze_text(text: str, show_supported=False, show_details=False) -> list[st
                            score=0.9)
     uuid_recognizer = PatternRecognizer(supported_entity='UUID',
                                         patterns=[uuid_pattern])
+    
+    banner_id_pattern = Pattern(name='banner_id_pattern',
+                            regex=r'\b(\d{9}|\d{6})\b',
+                            score=0.9)
+    banner_id_recognizer = PatternRecognizer(supported_entity="BANNER_ID",
+                                         patterns=[banner_id_pattern])
 
     # The default SSN detection looks for valid and invalid SSNs. Since we do not want to use
     # a valid SSN for testing purposes, we will create a custom SSN recognizer that will
@@ -51,6 +57,7 @@ def analyze_text(text: str, show_supported=False, show_details=False) -> list[st
     # Add custom recognizers
     registry.add_recognizer(uuid_recognizer)
     registry.add_recognizer(ssn_recognizer)
+    registry.add_recognizer(banner_id_recognizer)
 
     # Set up analyzer with our updated recognizer registry
     analyzer = AnalyzerEngine(registry=registry)
