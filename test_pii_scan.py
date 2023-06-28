@@ -168,6 +168,20 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is not a SSN: +1233456689')
         self.assertNotIn('US_SSN' , str(results))
 
+    def test_banner_id_detection(self):
+        # test a valid banner id
+        results = analyze_text("950754556")
+        self.assertIn('BANNER_ID', str(results))
+
+        results = analyze_text("987867")
+        self.assertIn('BANNER_ID', str(results))
+
+        results = analyze_text("098bbjk923")
+        self.assertNotIn('BANNER_ID', str(results))
+
+        results = analyze_text("09923")
+        self.assertNotIn('BANNER_ID', str(results))
+
 
 if __name__ == '__main__':
     unittest.main()
