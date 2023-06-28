@@ -1,8 +1,6 @@
-
 import unittest
 from pii_scan import show_aggie_pride, analyze_text
 from presidio_analyzer import RecognizerResult
-from presidio_analyzer import PatternRecognizer
 
 
 class TestPIIScan(unittest.TestCase):
@@ -39,7 +37,7 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('This is a democracy')
         self.assertNotIn('NRP', str(results))
-    
+
     def test_name_detection(self):
         # test a valid name
         results = analyze_text('Jason Bond')
@@ -113,7 +111,48 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
-   
+
+    def test_social_security_detection(self):
+            # test a valid social secutiy number
+        results = analyze_text('This is a SSN: 111-00-1111')
+        self.assertIn('US_SSN', str(results))
+
+        results = analyze_text('This is a SSN: 222-00-2222')
+        self.assertIn('US_SSN' , str(results))
+
+        results = analyze_text('This is a SSN: 000-11-0000')
+        self.assertIn('US_SSN' , str(results))
+
+        results = analyze_text('This is a SSN: 555-00-5555')
+        self.assertIn('US_SSN' , str(results))
+
+        results = analyze_text('This is a SSN: 666-00-6666')
+        self.assertIn('US_SSN' , str(results))
+
+        results = analyze_text('This is a SSN: 777-00-7777')
+        self.assertIn('US_SSN' , str(results))
+
+        results = analyze_text('This is a SSN: 666-11-6666')
+        self.assertIn('US_SSN' , str(results))
+
+        results = analyze_text('This is a SSN: 000-11-1000')
+        self.assertIn('US_SSN' , str(results))
+
+        results = analyze_text('This is not a SSN: 947-603-4211')
+        self.assertNotIn('US_SSN' , str(results))
+
+        results = analyze_text('This is not a SSN: 1256547632')
+        self.assertNotIn('US_SSN' , str(results))
+
+        results = analyze_text('This is not a SSN: 000,46,8789')
+        self.assertNotIn('US_SSN' , str(results))
+
+        results = analyze_text('This is not a SSN: #ABCDEFAB')
+        self.assertNotIn('US_SSN' , str(results))
+
+        results = analyze_text('This is not a SSN: +1233456689')
+        self.assertNotIn('US_SSN' , str(results))
+
     def test_banner_id_detection(self):
         # test a valid banner id
         results = analyze_text("950754556")
@@ -127,7 +166,7 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text("09923")
         self.assertNotIn('BANNER_ID', str(results))
-        
-        main
+
+
 if __name__ == '__main__':
     unittest.main()
