@@ -112,6 +112,20 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
 
+    def test_cc_number_detection(self):
+        # test a (possibly) valid credit card number
+        results = analyze_text('5602213409875654')
+        self.assertIn('US_BANK_NUMBER', str(results))
+
+        results = analyze_text('62312676895468655')
+        self.assertIn('US_BANK_NUMBER', str(results))
+
+        #testing invalid credit card numbers
+        results = analyze_text('6221-2676-8954-6785')
+        self.assertNotIn('US_BANK_NUMBER', str(results))
+
+        results = analyze_text('aaaabbbbccccdddd')
+        self.assertNotIn('US_BANK_NUMBER', str(results))
 
 if __name__ == '__main__':
     unittest.main()
