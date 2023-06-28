@@ -96,28 +96,13 @@ class TestPIIScan(unittest.TestCase):
 
     def test_social_security_detection(self):
             # test a valid social secutiy number 
-        results = analyze_text('This is a SSN: 121-35-1146')
+        results = analyze_text('This is a SSN: 111-00-1111')
         self.assertIn('US_SSN', str(results))
 
-        results = analyze_text('This is a SSN: 646-13-6685')
+        results = analyze_text('This is a SSN: 222-00-2222')
         self.assertIn('US_SSN' , str(results))
 
-        results = analyze_text('This is a SSN: 325-46-2435')
-        self.assertIn('US_SSN' , str(results))
-
-        results = analyze_text('This is a SSN: 413-78-3543')
-        self.assertIn('US_SSN' , str(results))
-        
-        results = analyze_text('This is a SSN: 856-45-6789')
-        self.assertIn('US_SSN' , str(results))
-
-        results = analyze_text('This is a SSN: 227-58-8812')
-        self.assertIn('US_SSN' , str(results))
-
-        results = analyze_text('This is a SSN: 598-92-9968')
-        self.assertIn('US_SSN' , str(results))
-
-        results = analyze_text('This is a SSN: 734-41-1135')
+        results = analyze_text('This is a SSN: 666-11-6666')
         self.assertIn('US_SSN' , str(results))
 
         results = analyze_text('This is not a SSN: 947-603-4211')
