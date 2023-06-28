@@ -1,7 +1,11 @@
 import unittest
 from pii_scan import show_aggie_pride, analyze_text
-from presidio_analyzer import RecognizerResult
-
+from typing import List
+import pprint
+from presidio_analyzer import AnalyzerEngine, PatternRecognizer, EntityRecognizer, Pattern, RecognizerResult
+from presidio_analyzer.recognizer_registry import RecognizerRegistry
+from presidio_analyzer.nlp_engine import NlpEngine, SpacyNlpEngine, NlpArtifacts
+from presidio_analyzer.context_aware_enhancers import LemmaContextAwareEnhancer
 
 class TestPIIScan(unittest.TestCase):
     def test_aggie_pride(self):
@@ -91,10 +95,32 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('(999)222-444444')
         self.assertNotIn('PHONE_NUMBER', str(results))
 
-        esults = analyze_text('thisisanemail@gmail.com')
+        results = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
 
+    def test_zipcode(self):
+        regex = r"(\b\d{5}(?:\-\d{4})?\b)"
+        zipcode_pattern = Pattern(name="zip code (weak)", regex=regex, score=0.01)
 
+# Define the recognizer with the defined pattern
+        zipcode_recognizer = PatternRecognizer(supported_entity="US_ZIP_CODE", patterns = [zipcode_pattern])
+
+        registry = RecognizerRegistry()
+        registry.add_recognizer(zipcode_recognizer)
+        analyzer = AnalyzerEngine(registry=registry)
+
+#Positive Test zipcode
+        results = analyzer.analyze(text="My zip code is 90010",language="en")
+        print(results)
+        self.assertRegex(r"(\b\d{5}\b)",str(results))
+        
+        results = analyzer.analyze(text="My zip code is 12519",language="en")
+        print(results)
+        self.assertRegex(r"(\b\d{5}\b)",str(results))
+#Negative test code: Comment out section to see the differnce
+        # results = analyzer.analyze(text="My zip code is 1234",language="en")
+        # print(results)
+        # self.assertRegex(r"(\b\d{5}\b)",str(results))
 
 if __name__ == '__main__':
     unittest.main()
