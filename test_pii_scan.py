@@ -37,7 +37,82 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('This is a democracy')
         self.assertNotIn('NRP', str(results))
+    
+    def test_name_detection(self):
+        # test a valid name
+        results = analyze_text('Jason Bond')
+        self.assertIn('PERSON', str(results))
 
+        results = analyze_text('Primrose R. Everdean')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Tony Robbins is my favorite salesman.')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Jada Pinkett-Smith')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('This is a regular sentence.')
+        self.assertNotIn('PERSON', str(results))
+
+
+    def test_phone_number_detection(self):
+        # test a valid phone number
+        results = analyze_text('9992224444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-222-4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.222.4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('(999)222-4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+  
+        results = analyze_text('1-999-222-4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        #results = analyze_text('+1(999)222-444')
+        #self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-22-4444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999224444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.22.4444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999224444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-222-444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('(999)222-444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.222.444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-222-444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999222444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.222.444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('(999)222-444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('thisisanemail@gmail.com')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+        
+        7-implement-ipv4-address-detection
     def test_IPv4_address_detection(self):
         # test for a valid IPv4 address. (no alphabet or special characters)
         results = analyze_text('123.123.123.123')
@@ -52,9 +127,7 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('1234.1243.1235.1235')
         self.assertNotIn('NRP', str(results))
-
-
-
+ main
 
 
 if __name__ == '__main__':
