@@ -38,6 +38,24 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is a democracy')
         self.assertNotIn('NRP', str(results))
 
+    def test_name_detection(self):
+        # test a valid name
+        results = analyze_text('Jason Bond')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Primrose R. Everdean')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Tony Robbins is my favorite salesman.')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Jada Pinkett-Smith')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('This is a regular sentence.')
+        self.assertNotIn('PERSON', str(results))
+
+
     def test_phone_number_detection(self):
         # test a valid phone number
         results = analyze_text('9992224444')
@@ -91,7 +109,7 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('(999)222-444444')
         self.assertNotIn('PHONE_NUMBER', str(results))
 
-        esults = analyze_text('thisisanemail@gmail.com')
+        results = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
 
     def test_social_security_detection(self):
