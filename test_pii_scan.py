@@ -41,6 +41,24 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('This is a democracy')
         self.assertNotIn('NRP', str(results))
+    
+    def test_name_detection(self):
+        # test a valid name
+        results = analyze_text('Jason Bond')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Primrose R. Everdean')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Tony Robbins is my favorite salesman.')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Jada Pinkett-Smith')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('This is a regular sentence.')
+        self.assertNotIn('PERSON', str(results))
+
 
     def test_phone_number_detection(self):
         # test a valid phone number
@@ -109,6 +127,7 @@ class TestPIIScan(unittest.TestCase):
         registry.add_recognizer(zipcode_recognizer)
         analyzer = AnalyzerEngine(registry=registry)
 
+
 #Positive Test zipcode
         results = analyzer.analyze(text="My zip code is 90010",language="en")
         print(results)
@@ -121,6 +140,7 @@ class TestPIIScan(unittest.TestCase):
         # results = analyzer.analyze(text="My zip code is 1234",language="en")
         # print(results)
         # self.assertRegex(r"(\b\d{5}\b)",str(results))
+
 
 if __name__ == '__main__':
     unittest.main()
