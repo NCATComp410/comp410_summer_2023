@@ -112,7 +112,6 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
         
-        7-implement-ipv4-address-detection
     def test_IPv4_address_detection(self):
         # test for a valid IPv4 address. (no alphabet or special characters)
         results = analyze_text('123.123.123.123')
@@ -127,7 +126,6 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('1234.1243.1235.1235')
         self.assertNotIn('NRP', str(results))
- main
 
 
 if __name__ == '__main__':
