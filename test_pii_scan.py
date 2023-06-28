@@ -119,13 +119,13 @@ class TestPIIScan(unittest.TestCase):
         self.assertIn('IP_ADDRESS', str(results))
 
         results = analyze_text('!&^*.R#S.123.TY$')
-        self.assertNotIn('NRP', str(results))
+        self.assertNotIn('IP_ADDRESS', str(results))
 
         results = analyze_text('DAa.ReS.unj.TYn')
-        self.assertNotIn('NRP', str(results))
+        self.assertNotIn('IP_ADDRESS', str(results))
 
         results = analyze_text('1234.1243.1235.1235')
-        self.assertNotIn('NRP', str(results))
+        self.assertNotIn('IP_ADDRESS', str(results))
 
 
 if __name__ == '__main__':
