@@ -38,6 +38,23 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is a democracy')
         self.assertNotIn('NRP', str(results))
 
+    def test_IPv4_address_detection(self):
+        # test for a valid IPv4 address. (no alphabet or special characters)
+        results = analyze_text('123.123.123.123')
+        print(results)
+        self.assertIn('IP_ADDRESS', str(results))
+
+        results = analyze_text('!&^*.R#S.123.TY$')
+        self.assertNotIn('NRP', str(results))
+
+        results = analyze_text('DAa.ReS.unj.TYn')
+        self.assertNotIn('NRP', str(results))
+
+        results = analyze_text('1234.1243.1235.1235')
+        self.assertNotIn('NRP', str(results))
+
+
+
 
 
 if __name__ == '__main__':
