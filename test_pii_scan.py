@@ -38,6 +38,7 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is a democracy')
         self.assertNotIn('NRP', str(results))
     
+         9-implement-date-of-birth-detection
     def DATE_TIME(self):
         #test a valid date of birth detection
         results = analyze_text('This is a date_of_birth:12/23/2001')
@@ -47,6 +48,81 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is not a date_of_birth:12/23/20aa')
         self.assertNotIn('date_of_birth', str(results))
         
+
+    def test_name_detection(self):
+        # test a valid name
+        results = analyze_text('Jason Bond')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Primrose R. Everdean')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Tony Robbins is my favorite salesman.')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('Jada Pinkett-Smith')
+        self.assertIn('PERSON', str(results))
+
+        results = analyze_text('This is a regular sentence.')
+        self.assertNotIn('PERSON', str(results))
+
+
+    def test_phone_number_detection(self):
+        # test a valid phone number
+        results = analyze_text('9992224444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-222-4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.222.4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('(999)222-4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+  
+        results = analyze_text('1-999-222-4444')
+        self.assertIn('PHONE_NUMBER', str(results))
+
+        #results = analyze_text('+1(999)222-444')
+        #self.assertIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-22-4444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999224444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.22.4444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999224444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-222-444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('(999)222-444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.222.444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999-222-444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999222444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('999.222.444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('(999)222-444444')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+
+        results = analyze_text('thisisanemail@gmail.com')
+        self.assertNotIn('PHONE_NUMBER', str(results))
+         main
 
 
 if __name__ == '__main__':
