@@ -112,6 +112,21 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
 
+    def test_religous_affiliation_detection(self):
+        # Positive Test for valid relgious group
+        results = analyze_text('I am a Christian')
+        self.assertIn('NRP', str(results))
+
+        results = analyze_text('I am a Muslim')
+        self.assertIn('NRP', str(results))
+
+        results = analyze_text('I am a Buddhist')
+        self.assertIn('NRP', str(results))
+
+        # Negative Test Case
+        results = analyze_text('He is Religious')
+        self.assertNotIn('NRP', str(results))
+
 
 if __name__ == '__main__':
     unittest.main()
