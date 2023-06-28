@@ -38,15 +38,15 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is a democracy')
         self.assertNotIn('NRP', str(results))
     
-         9-implement-date-of-birth-detection
-    def DATE_TIME(self):
+    
+    def date_of_birth_detection(self):
         #test a valid date of birth detection
-        results = analyze_text('This is a date_of_birth:12/23/2001')
-        self.assertIn('date_of_birth', str(results))
+        results = analyze_text(12/23/2001')
+        self.assertIn('DATE_TIME', str(results))
         
         #test a invalid date of birth detection
-        results = analyze_text('This is not a date_of_birth:12/23/20aa')
-        self.assertNotIn('date_of_birth', str(results))
+        results = analyze_text(':12/23/20aa')
+        self.assertNotIn('NRP', str(results))
         
 
     def test_name_detection(self):
