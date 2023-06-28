@@ -113,7 +113,7 @@ class TestPIIScan(unittest.TestCase):
         self.assertNotIn('PHONE_NUMBER', str(results))
 
     def test_social_security_detection(self):
-            # test a valid social secutiy number 
+            # test a valid social secutiy number
         results = analyze_text('This is a SSN: 111-00-1111')
         self.assertIn('US_SSN', str(results))
 
@@ -125,7 +125,7 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('This is a SSN: 555-00-5555')
         self.assertIn('US_SSN' , str(results))
-        
+
         results = analyze_text('This is a SSN: 666-00-6666')
         self.assertIn('US_SSN' , str(results))
 
@@ -153,6 +153,20 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is not a SSN: +1233456689')
         self.assertNotIn('US_SSN' , str(results))
 
-        
+    def test_banner_id_detection(self):
+        # test a valid banner id
+        results = analyze_text("950754556")
+        self.assertIn('BANNER_ID', str(results))
+
+        results = analyze_text("987867")
+        self.assertIn('BANNER_ID', str(results))
+
+        results = analyze_text("098bbjk923")
+        self.assertNotIn('BANNER_ID', str(results))
+
+        results = analyze_text("09923")
+        self.assertNotIn('BANNER_ID', str(results))
+
+
 if __name__ == '__main__':
     unittest.main()
