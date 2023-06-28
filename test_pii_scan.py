@@ -102,7 +102,22 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is a SSN: 222-00-2222')
         self.assertIn('US_SSN' , str(results))
 
+        results = analyze_text('This is a SSN: 000-11-0000')
+        self.assertIn('US_SSN' , str(results))
+
+        results = analyze_text('This is a SSN: 555-00-5555')
+        self.assertIn('US_SSN' , str(results))
+        
+        results = analyze_text('This is a SSN: 666-00-6666')
+        self.assertIn('US_SSN' , str(results))
+
+        results = analyze_text('This is a SSN: 777-00-7777')
+        self.assertIn('US_SSN' , str(results))
+
         results = analyze_text('This is a SSN: 666-11-6666')
+        self.assertIn('US_SSN' , str(results))
+
+        results = analyze_text('This is a SSN: 000-11-1000')
         self.assertIn('US_SSN' , str(results))
 
         results = analyze_text('This is not a SSN: 947-603-4211')
