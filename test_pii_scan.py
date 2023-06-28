@@ -123,7 +123,7 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
-         main
+         
 
 
 if __name__ == '__main__':
