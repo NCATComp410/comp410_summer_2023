@@ -113,5 +113,24 @@ class TestPIIScan(unittest.TestCase):
         self.assertNotIn('PHONE_NUMBER', str(results))
 
 
+    def test_US_DRIVER_LICENSE(self):
+        #test a valid US Drivers License
+        results = analyze_text('Name')
+        self.assertIn('US_DRIVER_LICENSE', str(results))
+
+        results = analyze_text('Date Of Birth')
+        self.assertIn('US_DRIVER_LICENSE', str(results))
+
+        results = analyze_text('Expiration Date')
+        self.assertIn('US_DRIVER_LICENSE', str(results))
+
+        results = analyze_text('ID Number')
+        self.assertIn('US_DRIVER_LICENSE', str(results))
+        
+        results = analyze_text('Social Security')
+        self.assertNotIn('US_DRIVER_LICENSE', str(results))
+                        
+
+
 if __name__ == '__main__':
     unittest.main()
