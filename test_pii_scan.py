@@ -39,7 +39,7 @@ class TestPIIScan(unittest.TestCase):
         self.assertNotIn('NRP', str(results))
     
     
-    def date_of_birth_detection(self):
+    def test_date_of_birth_detection(self):
         #test a valid date of birth detection
         results = analyze_text('12/23/2001')
         print(results)
