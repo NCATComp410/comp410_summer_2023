@@ -47,7 +47,7 @@ class TestPIIScan(unittest.TestCase):
         
         #test a invalid date of birth detection
         results = analyze_text('12/23/20aa')
-        self.assertNotIn('NRP', str(results))
+        self.assertNotIn('DATE_TIME', str(results))
         
 
     def test_name_detection(self):
