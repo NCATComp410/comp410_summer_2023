@@ -127,7 +127,6 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
-         
 
     def test_social_security_detection(self):
             # test a valid social secutiy number
