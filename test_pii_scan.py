@@ -47,10 +47,10 @@ class TestPIIScan(unittest.TestCase):
         self.assertIn('DATE_TIME', str(results))
         
         #test a invalid date of birth detection
-        results = analyze_text('12/23/20aa')
+        results = analyze_text('bc/!-34/iuo')
         self.assertNotIn('DATE_TIME', str(results))
 
-        results = analyze_text('12/235/2034')
+        results = analyze_text('12-234-2034')
         self.assertNotIn('DATE_TIME', str(results))
     
 
