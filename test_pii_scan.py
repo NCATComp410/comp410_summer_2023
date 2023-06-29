@@ -51,7 +51,7 @@ class TestPIIScan(unittest.TestCase):
         self.assertNotIn('DATE_TIME', str(results))
         
 
- main
+ 
 
     def test_name_detection(self):
         # test a valid name
