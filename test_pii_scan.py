@@ -53,11 +53,6 @@ class TestPIIScan(unittest.TestCase):
         self.assertNotIn('DATE_TIME', str(results))
     
 
-        
-        
-
- 
-
     def test_name_detection(self):
         # test a valid name
         results = analyze_text('Jason Bond')
