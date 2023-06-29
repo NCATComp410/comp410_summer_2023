@@ -49,6 +49,10 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('12/23/20aa')
         self.assertNotIn('DATE_TIME', str(results))
 
+        results = analyze_text('12/235/2034')
+        self.assertNotIn('DATE_TIME', str(results))
+    
+
         
         
 
