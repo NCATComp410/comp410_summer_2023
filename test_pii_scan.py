@@ -111,6 +111,21 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('thisisanemail@gmail.com')
         self.assertNotIn('PHONE_NUMBER', str(results))
+        
+    def test_IPv4_address_detection(self):
+        # test for a valid IPv4 address. (no alphabet or special characters)
+        results = analyze_text('123.123.123.123')
+        print(results)
+        self.assertIn('IP_ADDRESS', str(results))
+
+        results = analyze_text('!&^*.R#S.123.TY$')
+        self.assertNotIn('IP_ADDRESS', str(results))
+
+        results = analyze_text('DAa.ReS.unj.TYn')
+        self.assertNotIn('IP_ADDRESS', str(results))
+
+        results = analyze_text('1234.1243.1235.1235')
+        self.assertNotIn('IP_ADDRESS', str(results))
 
     def test_social_security_detection(self):
             # test a valid social secutiy number
