@@ -127,6 +127,21 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('1234.1243.1235.1235')
         self.assertNotIn('IP_ADDRESS', str(results))
 
+    def test_religous_affiliation_detection(self):
+        # Positive Test for valid relgious group
+        results = analyze_text('I am a Christian')
+        self.assertIn('NRP', str(results))
+
+        results = analyze_text('I am a Muslim')
+        self.assertIn('NRP', str(results))
+
+        results = analyze_text('I am a Buddhist')
+        self.assertIn('NRP', str(results))
+
+        # Negative Test Case
+        results = analyze_text('He is Religious')
+        self.assertNotIn('NRP', str(results))
+
     def test_social_security_detection(self):
             # test a valid social secutiy number
         results = analyze_text('This is a SSN: 111-00-1111')
