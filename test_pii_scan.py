@@ -197,6 +197,26 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text("09923")
         self.assertNotIn('BANNER_ID', str(results))
 
+    def test_cc_number_detection(self):
+        # test a (possibly) valid credit card number
+        # https://developer.squareup.com/docs/devtools/sandbox/payments
+        cc_nums = {'Visa': '4111 1111 1111 1111',
+                   'Mastercard': '5105 1051 0510 5100',
+                   'Discover': '6011 0000 0000 0004',
+                   'Diners Club': '3000 000000 0004',
+                   'JCB': '3566 1111 1111 1113',
+                   'American Express': '3400 000000 00009'}
+
+        for cc_type, cc_num in cc_nums.items():
+            print('testing {} number: {}'.format(cc_type, cc_num))
+            results = analyze_text(cc_num)
+            print(results)
+            self.assertIn('CREDIT_CARD', str(results))
+
+        # test an invalid credit card number
+        results = analyze_text('1234 5678 9012 3456')
+        self.assertNotIn('CREDIT_CARD', str(results))
+
 
 if __name__ == '__main__':
     unittest.main()
