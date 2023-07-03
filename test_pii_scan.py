@@ -37,6 +37,22 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('This is a democracy')
         self.assertNotIn('NRP', str(results))
+  
+    
+    
+    def test_date_of_birth_detection(self):
+        #test a valid date of birth detection
+        results = analyze_text('12/23/2001')
+        print(results)
+        self.assertIn('DATE_TIME', str(results))
+        
+        #test a invalid date of birth detection
+        results = analyze_text('bc/!-34/iuo')
+        self.assertNotIn('DATE_TIME', str(results))
+
+        results = analyze_text('12-234-2034')
+        self.assertNotIn('DATE_TIME', str(results))
+    
 
     def test_name_detection(self):
         # test a valid name
