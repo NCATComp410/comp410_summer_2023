@@ -36,12 +36,12 @@ def analyze_text(text: str, show_supported=False, show_details=False) -> list[st
                            score=0.9)
     uuid_recognizer = PatternRecognizer(supported_entity='UUID',
                                         patterns=[uuid_pattern])
-    
+
     banner_id_pattern = Pattern(name='banner_id_pattern',
-                            regex=r'\b(\d{9}|\d{6})\b',
-                            score=0.9)
+                                regex=r'\b(\d{9}|\d{6})\b',
+                                score=0.9)
     banner_id_recognizer = PatternRecognizer(supported_entity="BANNER_ID",
-                                         patterns=[banner_id_pattern])
+                                             patterns=[banner_id_pattern])
 
     # The default SSN detection looks for valid and invalid SSNs. Since we do not want to use
     # a valid SSN for testing purposes, we will create a custom SSN recognizer that will
@@ -66,17 +66,17 @@ def analyze_text(text: str, show_supported=False, show_details=False) -> list[st
     if show_supported:
         return analyzer.get_supported_entities()
 
-    results = analyzer.analyze(text=text,
-                               language='en')
-
-    results = analyzer.analyze(text=text,
-                               language="en",
-                               return_decision_process=show_details)
     if show_details:
+        results = analyzer.analyze(text=text,
+                                   language="en",
+                                   return_decision_process=show_details)
         print(results)
         for r in results:
             decision_process = r.analysis_explanation
             print(decision_process)
+    else:
+        results = analyzer.analyze(text=text,
+                                   language='en')
 
     return results
 
