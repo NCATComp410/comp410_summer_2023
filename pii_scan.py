@@ -1,6 +1,7 @@
 import uuid
 import spacy
 from presidio_analyzer import AnalyzerEngine, RecognizerRegistry, PatternRecognizer, Pattern, RecognizerResult
+from presidio_anonymizer import AnonymizerEngine
 
 # make sure en_core_web_lg is loaded correctly
 try:
@@ -22,7 +23,8 @@ def generate_uuid():
     return uuid.uuid4()
 
 
-def analyze_text(text: str, show_supported=False, show_details=False) -> list[str] | list[RecognizerResult]:
+def analyze_text(text: str, show_supported=False, show_details=False, score_threshold=0.0) -> \
+        list[str] | list[RecognizerResult]:
     # Overview of Presidio
     # https://microsoft.github.io/presidio/analyzer/
 
@@ -68,6 +70,7 @@ def analyze_text(text: str, show_supported=False, show_details=False) -> list[st
 
     if show_details:
         results = analyzer.analyze(text=text,
+                                   score_threshold=score_threshold,
                                    language="en",
                                    return_decision_process=show_details)
         print(results)
@@ -76,11 +79,29 @@ def analyze_text(text: str, show_supported=False, show_details=False) -> list[st
             print(decision_process)
     else:
         results = analyzer.analyze(text=text,
+                                   score_threshold=score_threshold,
                                    language='en')
 
     return results
 
 
+def anonymize_text(text: str):
+    engine = AnonymizerEngine()
+
+    # First analyze the text to be anonymized
+    results = analyze_text(text)
+
+    # Now anonymize the text
+    anon = engine.anonymize(
+        text=text,
+        analyzer_results=results
+    )
+    return anon
+
+
 if __name__ == '__main__':
-    print(show_aggie_pride())
-    print(generate_uuid())
+    # read text file and anonymize it
+    with open('legal_brief.txt', 'r') as f:
+        file_text = f.read()
+        anon_result = anonymize_text(file_text)
+        print(anon_result.text)

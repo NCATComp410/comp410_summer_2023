@@ -1,5 +1,5 @@
 import unittest
-from pii_scan import show_aggie_pride, analyze_text
+from pii_scan import show_aggie_pride, analyze_text, anonymize_text
 
 
 class TestPIIScan(unittest.TestCase):
@@ -227,6 +227,17 @@ class TestPIIScan(unittest.TestCase):
         # test an invalid credit card number
         results = analyze_text('1234 5678 9012 3456')
         self.assertNotIn('CREDIT_CARD', str(results))
+
+    def test_anonymizer(self):
+        """Implement a quick test on the anonymizer"""
+        # positive phone number test
+        anon = anonymize_text('This is a phone number test +1-919-555-1212')
+        self.assertEqual(anon.text, 'This is a phone number test <PHONE_NUMBER>')
+
+        # negative phone number test
+        anon = anonymize_text('This is not a phone number test 55-1212')
+        # nothing should be anonymized
+        self.assertEqual(anon.text, 'This is not a phone number test 55-1212')
 
 
 if __name__ == '__main__':
