@@ -1,6 +1,5 @@
 import unittest
-from pii_scan import show_aggie_pride, analyze_text
-from presidio_analyzer import RecognizerResult
+from pii_scan import show_aggie_pride, analyze_text, anonymize_text
 
 
 class TestPIIScan(unittest.TestCase):
@@ -37,22 +36,19 @@ class TestPIIScan(unittest.TestCase):
 
         results = analyze_text('This is a democracy')
         self.assertNotIn('NRP', str(results))
-  
-    
-    
+
     def test_date_of_birth_detection(self):
-        #test a valid date of birth detection
+        # test a valid date of birth detection
         results = analyze_text('12/23/2001')
         print(results)
         self.assertIn('DATE_TIME', str(results))
         
-        #test a invalid date of birth detection
+        # test a invalid date of birth detection
         results = analyze_text('bc/!-34/iuo')
         self.assertNotIn('DATE_TIME', str(results))
 
         results = analyze_text('12-234-2034')
         self.assertNotIn('DATE_TIME', str(results))
-    
 
     def test_name_detection(self):
         # test a valid name
@@ -71,7 +67,6 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is a regular sentence.')
         self.assertNotIn('PERSON', str(results))
 
-
     def test_phone_number_detection(self):
         # test a valid phone number
         results = analyze_text('9992224444')
@@ -89,8 +84,8 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('1-999-222-4444')
         self.assertIn('PHONE_NUMBER', str(results))
 
-        #results = analyze_text('+1(999)222-444')
-        #self.assertIn('PHONE_NUMBER', str(results))
+        # results = analyze_text('+1(999)222-444')
+        # self.assertIn('PHONE_NUMBER', str(results))
 
         results = analyze_text('999-22-4444')
         self.assertNotIn('PHONE_NUMBER', str(results))
@@ -159,45 +154,45 @@ class TestPIIScan(unittest.TestCase):
         self.assertNotIn('NRP', str(results))
 
     def test_social_security_detection(self):
-            # test a valid social secutiy number
+        # test a valid social secutiy number
         results = analyze_text('This is a SSN: 111-00-1111')
         self.assertIn('US_SSN', str(results))
 
         results = analyze_text('This is a SSN: 222-00-2222')
-        self.assertIn('US_SSN' , str(results))
+        self.assertIn('US_SSN', str(results))
 
         results = analyze_text('This is a SSN: 000-11-0000')
-        self.assertIn('US_SSN' , str(results))
+        self.assertIn('US_SSN', str(results))
 
         results = analyze_text('This is a SSN: 555-00-5555')
-        self.assertIn('US_SSN' , str(results))
+        self.assertIn('US_SSN', str(results))
 
         results = analyze_text('This is a SSN: 666-00-6666')
-        self.assertIn('US_SSN' , str(results))
+        self.assertIn('US_SSN', str(results))
 
         results = analyze_text('This is a SSN: 777-00-7777')
-        self.assertIn('US_SSN' , str(results))
+        self.assertIn('US_SSN', str(results))
 
         results = analyze_text('This is a SSN: 666-11-6666')
-        self.assertIn('US_SSN' , str(results))
+        self.assertIn('US_SSN', str(results))
 
         results = analyze_text('This is a SSN: 000-11-1000')
-        self.assertIn('US_SSN' , str(results))
+        self.assertIn('US_SSN', str(results))
 
         results = analyze_text('This is not a SSN: 947-603-4211')
-        self.assertNotIn('US_SSN' , str(results))
+        self.assertNotIn('US_SSN', str(results))
 
         results = analyze_text('This is not a SSN: 1256547632')
-        self.assertNotIn('US_SSN' , str(results))
+        self.assertNotIn('US_SSN', str(results))
 
         results = analyze_text('This is not a SSN: 000,46,8789')
-        self.assertNotIn('US_SSN' , str(results))
+        self.assertNotIn('US_SSN', str(results))
 
         results = analyze_text('This is not a SSN: #ABCDEFAB')
-        self.assertNotIn('US_SSN' , str(results))
+        self.assertNotIn('US_SSN', str(results))
 
         results = analyze_text('This is not a SSN: +1233456689')
-        self.assertNotIn('US_SSN' , str(results))
+        self.assertNotIn('US_SSN', str(results))
 
     def test_banner_id_detection(self):
         # test a valid banner id
@@ -232,6 +227,17 @@ class TestPIIScan(unittest.TestCase):
         # test an invalid credit card number
         results = analyze_text('1234 5678 9012 3456')
         self.assertNotIn('CREDIT_CARD', str(results))
+
+    def test_anonymizer(self):
+        """Implement a quick test on the anonymizer"""
+        # positive phone number test
+        anon = anonymize_text('This is a phone number test +1-919-555-1212')
+        self.assertEqual(anon.text, 'This is a phone number test <PHONE_NUMBER>')
+
+        # negative phone number test
+        anon = anonymize_text('This is not a phone number test 55-1212')
+        # nothing should be anonymized
+        self.assertEqual(anon.text, 'This is not a phone number test 55-1212')
 
 
 if __name__ == '__main__':
