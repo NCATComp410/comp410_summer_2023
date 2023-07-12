@@ -52,6 +52,12 @@ def analyze_text(text: str, show_supported=False, show_details=False, score_thre
     ssn_pattern = Pattern(name='ssn_pattern', regex=r'\b\d{3}-\d{2}-\d{4}\b', score=0.9)
     ssn_recognizer = PatternRecognizer(supported_entity='US_SSN', patterns=[ssn_pattern])
 
+    location_pattern = Pattern(name='location_pattern',
+                               regex=r'([0-9.-]+).+?([0-9.-]+)',
+                                score=0.9)
+    location_recognizer = PatternRecognizer(supported_entity="GPS_LOCATION",
+                                             patterns=[location_pattern])
+
     # Initialize the recognition registry
     registry = RecognizerRegistry()
     registry.load_predefined_recognizers()
@@ -60,7 +66,8 @@ def analyze_text(text: str, show_supported=False, show_details=False, score_thre
     registry.add_recognizer(uuid_recognizer)
     registry.add_recognizer(ssn_recognizer)
     registry.add_recognizer(banner_id_recognizer)
-
+    registry.add_recognizer(location_recognizer)
+    
     # Set up analyzer with our updated recognizer registry
     analyzer = AnalyzerEngine(registry=registry)
 

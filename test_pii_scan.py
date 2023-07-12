@@ -13,6 +13,25 @@ class TestPIIScan(unittest.TestCase):
         print(results)
         self.assertTrue(True)
 
+    def test_location(self):
+        """Implement a test for location"""
+        #Test a valid location
+        results = analyze_text("This is a location: 40.7128° N, 74.0060° W")
+        self.assertIn("LOCATION", str(results))
+        #Test another valid location
+        results = analyze_text("This is a location: 28.3° N, 19° W")
+        self.assertIn("LOCATION", str(results))
+
+        #Test only one value
+        results = analyze_text("This is a location: 19° W")
+        self.assertNotIn("LOCATION", str(results))
+        #Test other one value
+        results = analyze_text("This is a location: 41° S")
+        self.assertNotIn("LOCATION", str(results))
+        # Random invalid text
+        results = analyze_text("The quick brown fox jumps over the lazy dog")
+        self.assertNotIn("LOCATION", str(results))
+
     def test_uuid(self):
         # test a valid UUID for detection
         results = analyze_text('This is a UUID: 123e4567-e89b-12d3-a456-42665234000c')
@@ -239,6 +258,7 @@ class TestPIIScan(unittest.TestCase):
         # nothing should be anonymized
         self.assertEqual(anon.text, 'This is not a phone number test 55-1212')
 
-
+    
+        print
 if __name__ == '__main__':
     unittest.main()
