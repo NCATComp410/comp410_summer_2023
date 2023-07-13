@@ -115,19 +115,14 @@ class TestPIIScan(unittest.TestCase):
 
     def test_US_DRIVER_LICENSE(self):
         #test a valid US Drivers License
-        results = analyze_text('Name')
+        results = analyze_text('005644532728')
+        print(results)
         self.assertIn('US_DRIVER_LICENSE', str(results))
 
-        results = analyze_text('Date Of Birth')
-        self.assertIn('US_DRIVER_LICENSE', str(results))
+        results = analyze_text('1111*2222-3333/4444')
+        self.assertNotIn('US_DRIVER_LICENSE', str(results))
 
-        results = analyze_text('Expiration Date')
-        self.assertIn('US_DRIVER_LICENSE', str(results))
-
-        results = analyze_text('ID Number')
-        self.assertIn('US_DRIVER_LICENSE', str(results))
-        
-        results = analyze_text('Social Security')
+        results = analyze_text('123/456+789*11222')
         self.assertNotIn('US_DRIVER_LICENSE', str(results))
                         
 
