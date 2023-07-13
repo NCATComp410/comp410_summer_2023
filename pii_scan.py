@@ -46,7 +46,7 @@ def analyze_text(text: str, show_supported=False, show_details=False, score_thre
                                              patterns=[banner_id_pattern])
     
     zipcode_pattern = Pattern(name='zipcode_pattern',
-                                 regex=r'(\b\d{5}(?!-)\b)| (\b\d{5}-\d{4}\b)',
+                                 regex=r'(\b\d{5}(?!-)\b)|(\b\d{5}-\d{4}\b)',
                                  score=0.9)
     
     zipcode_recognizer = PatternRecognizer(supported_entity='ZIP_CODE',

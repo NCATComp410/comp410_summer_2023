@@ -36,10 +36,16 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('20011')
         self.assertIn('ZIP_CODE', str(results))
 
+        results = analyze_text('10011-0012')
+        self.assertIn('ZIP_CODE', str(results))
+
         results = analyze_text('110011')
         self.assertNotIn('ZIP_CODE', str(results))
 
         results = analyze_text('1100')
+        self.assertNotIn('ZIP_CODE', str(results))
+
+        results = analyze_text('11001-221')
         self.assertNotIn('ZIP_CODE', str(results))
 
     def test_political_group_detection(self):
