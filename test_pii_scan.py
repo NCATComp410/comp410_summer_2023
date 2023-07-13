@@ -26,6 +26,28 @@ class TestPIIScan(unittest.TestCase):
         results = analyze_text('This is not a UUID: 123e4567-e89b-12d3-a456-42665234000')
         self.assertNotIn('UUID', str(results))
 
+    def test_zipcode(self):
+        results = analyze_text('11011')
+        self.assertIn('ZIP_CODE', str(results))
+
+        results = analyze_text('Zipcode: 11011')
+        self.assertIn('ZIP_CODE', str(results))
+
+        results = analyze_text('20011')
+        self.assertIn('ZIP_CODE', str(results))
+
+        results = analyze_text('10011-0012')
+        self.assertIn('ZIP_CODE', str(results))
+
+        results = analyze_text('110011')
+        self.assertNotIn('ZIP_CODE', str(results))
+
+        results = analyze_text('1100')
+        self.assertNotIn('ZIP_CODE', str(results))
+
+        results = analyze_text('11001-221')
+        self.assertNotIn('ZIP_CODE', str(results))
+
     def test_political_group_detection(self):
         # test a valid political group
         results = analyze_text('I am a Democrat')
