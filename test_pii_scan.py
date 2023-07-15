@@ -240,5 +240,19 @@ class TestPIIScan(unittest.TestCase):
         self.assertEqual(anon.text, 'This is not a phone number test 55-1212')
 
 
+    def test_US_DRIVER_LICENSE(self):
+        #test a valid US Drivers License
+        results = analyze_text('005644532728')
+        print(results)
+        self.assertIn('US_DRIVER_LICENSE', str(results))
+
+        results = analyze_text('1111*2222-3333/4444')
+        self.assertNotIn('US_DRIVER_LICENSE', str(results))
+
+        results = analyze_text('123/456+789*11222')
+        self.assertNotIn('US_DRIVER_LICENSE', str(results))
+                        
+
+
 if __name__ == '__main__':
     unittest.main()
