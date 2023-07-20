@@ -44,6 +44,13 @@ def analyze_text(text: str, show_supported=False, show_details=False, score_thre
                                 score=0.9)
     banner_id_recognizer = PatternRecognizer(supported_entity="BANNER_ID",
                                              patterns=[banner_id_pattern])
+    
+    zipcode_pattern = Pattern(name='zipcode_pattern',
+                                 regex=r'(\b\d{5}(?!-)\b)|(\b\d{5}-\d{4}\b)',
+                                 score=0.9)
+    
+    zipcode_recognizer = PatternRecognizer(supported_entity='ZIP_CODE',
+                                           patterns=[zipcode_pattern])
 
     # The default SSN detection looks for valid and invalid SSNs. Since we do not want to use
     # a valid SSN for testing purposes, we will create a custom SSN recognizer that will
@@ -60,6 +67,8 @@ def analyze_text(text: str, show_supported=False, show_details=False, score_thre
     registry.add_recognizer(uuid_recognizer)
     registry.add_recognizer(ssn_recognizer)
     registry.add_recognizer(banner_id_recognizer)
+    registry.add_recognizer(zipcode_recognizer)
+
 
     # Set up analyzer with our updated recognizer registry
     analyzer = AnalyzerEngine(registry=registry)
